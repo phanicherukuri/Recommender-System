@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Request JSON Test</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" >
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+     <form class="form-inline" style="padding-left:100px;padding-bottom:10px;padding-top:100px;">
+		<!--      <label class="sr-only" for="userid">UserID</label>
+	  	<input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" style="width:150px" id="userid" name="userid" placeholder="userid">
+		<label class="sr-only" for="noofrecommendations">NumberOfRecommendations</label>
+	   	<input type="password" class="form-control" id="noofrecommendations" style="width:150px" name="noofrecommendations" placeholder="Password">
+  		<br />	 -->
+  <div class="form-group">
+      <label for="usr"></label>
+      <input type="text" class="form-control" id="usr" placeholder="UserId">
+    </div>
+    <div class="form-group">
+      <label for="noofrecommendations"></label>
+      <input type="text" class="form-control" id="noofrecommendations" placeholder="Recommendations">
+    </div>	
+    </form>
+    <div style="padding-left:106px;">
+    <a href="#" id="get-data" >Get Recommendations</a> </div>
+    <br />
+    <div id="show-data" style="padding-left:100px;padding-top:20px;"></div>
+    
+    
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  </body>
+  <script>
+  $(document).ready(function () {
+	  $('#get-data').click(function () {
+	    var showData = $('#show-data');
+
+	    $.getJSON('http://localhost:8080/finaltest2/rest/recommendation/'+$('#usr').val()+'/'+$('#noofrecommendations').val(), function (data) {
+	      console.log(data);
+
+	      var items = data.map(function (item) {
+	        return 'ItemID: '+item.item + ', Ratings: ' + item.value;
+	      });
+
+	      showData.empty();
+
+	      if (items.length) {
+	        var content = '<li>' + items.join('</li><li>') + '</li>';
+	        var list = $('<ul />').html(content);
+	        showData.append(list);
+	      }
+	    });
+
+	    showData.text('Loading the JSON file.');
+	  });
+	});
+  
+  </script>
+</html>
