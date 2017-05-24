@@ -1,4 +1,4 @@
-package com.mkyong.rest;
+package com.patternrecognition.rest;
 
 import java.io.File;
 import java.nio.file.Paths;
