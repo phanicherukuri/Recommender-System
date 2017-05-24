@@ -1,4 +1,4 @@
-package com.mkyong.rest;
+package com.patternrecognition.rest;
 
 public class OutputFormat {
 	private long item;
