@@ -30,46 +30,31 @@ public class HelloWorldService {
 	@GET
 	@Path("{userid}/{noofrec}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<OutputFormat> getMsg(@PathParam("userid") long userid, @PathParam("noofrec") int noofRec) {
-		Instant starttime = Instant.now();
-		String s="";
-		List<OutputFormat> output=new ArrayList<OutputFormat>();
-		try{
-			java.nio.file.Path currentRelativePath = (java.nio.file.Path) Paths.get("");
-			s = ((java.nio.file.Path) currentRelativePath).toAbsolutePath().toString();
-			DataModel model = new FileDataModel(new File("C:\\Users\\cheru\\Desktop\\dataset.csv"));
-	    	//DataModel model2 = new FileDataModel(new File("C:\\Users\\cheru\\Desktop\\"));
-			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-	    	UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
-	    	UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
-	    	List<RecommendedItem> recommendations = recommender.recommend(userid,noofRec);
-	    	for (RecommendedItem recommendation : recommendations) 
-	    	{
-	    		
-	    	  System.out.println(recommendation);
-	    	  // read movie name using reco... . getItemID()
-			  // String moviename=
-	    	  //long id = recommendation.getItemID();
-	    	  output.add(new OutputFormat(recommendation.getItemID(),recommendation.getValue()));
-	    	}
-	    	Instant endtime = Instant.now();
-	    	long ns = Duration.between(starttime, endtime).toNanos();
-	    	System.out.println("time taken: "+ ns+ " nanoseconds");
-		}catch(Exception e){
-			System.out.println(s+" "+e);
+	public List<OutputFormat> getMsg(@PathParam("userid") long userid, @PathParam("noofrec") int noofRec) 
+	{
+	  Instant starttime = Instant.now();
+	  String s="";
+	  List<OutputFormat> output=new ArrayList<OutputFormat>();
+	  try{
+		java.nio.file.Path currentRelativePath = (java.nio.file.Path) Paths.get("");
+		s = ((java.nio.file.Path) currentRelativePath).toAbsolutePath().toString();
+		DataModel model = new FileDataModel(new File("C:\\Users\\cheru\\Desktop\\dataset.csv"));
+		UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
+		UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
+		UserBasedRecommender recommender = new GenericUserBasedRecommender(model, neighborhood, similarity);
+		List<RecommendedItem> recommendations = recommender.recommend(userid,noofRec);
+		for (RecommendedItem recommendation : recommendations) 
+		{
+		  System.out.println(recommendation);
+		  output.add(new OutputFormat(recommendation.getItemID(),recommendation.getValue()));
 		}
-		
-		return output;
+		Instant endtime = Instant.now();
+		long ns = Duration.between(starttime, endtime).toNanos();
+		System.out.println("time taken: "+ ns+ " nanoseconds");
+		}
+	catch(Exception e){
+		System.out.println(s+" "+e);
+		}
+	return output;
 	}
-	
-//	@GET
-//	@Path("/test")
-//	public Response getMsgtest() {
-//
-//		String output = "Jersey say : " ;
-//
-//		return Response.status(200).entity(output).build();
-//
-//	}
-
 }
